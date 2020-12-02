@@ -8,21 +8,29 @@ from termcolor import colored
 init()
 
 std_fileloc = "./votes.csv"
-filestd = input("standard file location? y/n: ")
-if filestd == "y":
-   fileloc = std_fileloc
-elif filestd == "n":
-   fileloc = input("file location?")
-else:
-   raise ValueError("wrong input")
+filestd = None
+while(filestd != "y" and filestd != "n"):    
+    filestd = input("standard file location? y/n: ")
+    if filestd == "y":
+       fileloc = std_fileloc
+    elif filestd == "n":
+       fileloc = input("file location? \n")
+       if not os.path.exists(fileloc):
+            print("file not found")
+            filestd = None
+    else:
+       print("wrong input")
    
-multivote_remove = input("remove multiple votes? (uses newest vote from voter) y/n: ")
-if multivote_remove == "y":
-   multivote_remover = True
-elif multivote_remove == "n":
-   multivote_remover = False
-else:
-   raise ValueError("wrong input")
+
+multivote_remove = None
+while(multivote_remove != "y" and multivote_remove != "n"):
+    multivote_remove = input("remove multiple votes? (uses newest vote from voter) y/n: ")
+    if multivote_remove == "y":
+       multivote_remover = True
+    elif multivote_remove == "n":
+       multivote_remover = False
+    else:
+       print("wrong input")
     
 threshold = input("enter threshold in %: ")
 print()
