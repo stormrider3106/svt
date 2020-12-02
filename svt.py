@@ -7,7 +7,7 @@ from termcolor import colored
 
 init()
 
-std_fileloc = "/mnt/c/svt/votes.csv"
+std_fileloc = "./votes.csv"
 filestd = input("standard file location? y/n: ")
 if filestd == "y":
    fileloc = std_fileloc
