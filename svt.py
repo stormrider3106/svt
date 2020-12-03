@@ -10,7 +10,7 @@ init()
 std_fileloc = "./votes.csv"
 filestd = None
 while(filestd != "y" and filestd != "n"):    
-    filestd = input("standard file location? y/n: ")
+    filestd = input("standard file location? (standard file location is ./votes.csv) y/n: ")
     if filestd == "y":
        fileloc = std_fileloc
     elif filestd == "n":
@@ -32,7 +32,17 @@ while(multivote_remove != "y" and multivote_remove != "n"):
     else:
        print("wrong input")
     
-threshold = input("enter threshold in %: ")
+threshold = -1
+while(threshold < 0 or threshold > 100):
+    threshold = input("enter threshold in %: ")
+    try: 
+        threshold = int(threshold)
+    except ValueError:
+        print("threshold is numbers only (0-100%)")
+        threshold = -1
+        continue
+    if threshold < 0 or threshold > 100:
+        print("threshold outside range (0-100%)")
 print()
 df = pd.read_csv(std_fileloc)
 columns = df.columns
