@@ -8,6 +8,7 @@ init()
 voters = {}
 
 
+# check if entered threshold is between 0 and 100
 def parse_threshold(thr):
     if thr >= 0 and thr <= 100:
         return thr
@@ -15,6 +16,8 @@ def parse_threshold(thr):
     raise argparse.ArgumentTypeError(f"Error: Threshold {thr} is not in range 0 - 100")
 
 
+# counts how many times somebody has voted and adds them to the voters dictionary. how many times the peron has voted
+# is stored as data under name as key
 def check_voters(data: dict):
     if not voters or data['Discord tag (UserName#0000)'] not in voters.keys():
         voters[data['Discord tag (UserName#0000)']] = 1
@@ -22,6 +25,7 @@ def check_voters(data: dict):
         voters[data['Discord tag (UserName#0000)']] += 1
 
 
+# removes older duplicate votes. only the youngest vote remains
 def remove_multivotes(data):
     votes = {}
 
@@ -31,18 +35,21 @@ def remove_multivotes(data):
     return votes
 
 
+# prints out result of vote round
 def count_priority_votes(parties, priority, max_votes):
     print(f"Results for round {priority}: \n")
     for key, value in parties.items():
-        print(f"{key}: {value[str(priority)]} votes, {value[str(priority)] / max_votes}")
+        print(f"{key}: {value[str(priority)]} votes, {round(value[str(priority)] / max_votes * 100, 2)}%")
 
 
 def count_votes(votes):
     parties = {}
+    # adds parties to the parties dictionary
     for party in votes[list(votes.keys())[0]].keys():
         if party != 'Discord tag (UserName#0000)' and party != 'Timestamp':
             parties[party] = {'1': 0}
 
+    # stores priorities of votes for parties as data using party and priority as keys
     for party, partydata in parties.items():
         for key, value in votes.items():
             if value[party] not in parties[party].keys():
@@ -51,7 +58,7 @@ def count_votes(votes):
                 parties[party][value[party]] += 1
 
     while len(parties.keys()) >= 0:
-    count_priority_votes(parties, 1, len(votes))
+        count_priority_votes(parties, 1, len(votes))
 
 
 parser = argparse.ArgumentParser(
